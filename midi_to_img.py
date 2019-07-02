@@ -145,4 +145,4 @@ if __name__ == '__main__':
                     part.save(os.path.join("generated_images", name))
                     counter += 1
 
-    print("Time elapsed: {} seconds", time.time() - start_time)
+    print("Time elapsed: {} seconds".format(time.time() - start_time))
