@@ -1,0 +1,27 @@
+StringInstrument : 23
+Guitar : 17
+Accordion : 16
+Ocarina : 7
+Saxophone : 7
+Clarinet : 7
+Voice : 6
+Electric Guitar : 6
+Trumpet : 6
+Electric Organ : 5
+Pan Flute : 4
+Piano : 4
+Vibraphone : 3
+Violin : 2
+Piccolo : 2
+Flute : 1
+Glockenspiel : 1
+Baritone Saxophone : 1
+Shakuhachi : 1
+English Horn : 1
+Reed Organ : 1
+Harmonica : 1
+Marimba : 1
+Koto : 1
+Bassoon : 1
+Clavichord : 1
+Organ : 1
