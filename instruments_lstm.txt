@@ -1,0 +1,44 @@
+Piano : 58
+Accordion : 30
+Ukulele : 30
+Guitar : 23
+Brass : 18
+Bass clarinet : 16
+Fretless Bass : 15
+StringInstrument : 14
+Acoustic Bass : 14
+Electric Organ : 13
+Electric Guitar : 12
+Ocarina : 10
+Trumpet : 9
+Soprano : 9
+Alto Saxophone : 7
+Saxophone : 7
+Pan Flute : 7
+Violin : 6
+Mandolin : 6
+Acoustic Guitar : 6
+Flute : 5
+Reed Organ : 5
+Celesta : 4
+Harmonica : 4
+Tenor : 4
+Harp : 4
+Tenor Saxophone : 3
+Piccolo : 3
+Vibraphone : 3
+Clarinet : 3
+Clavichord : 2
+Shakuhachi : 2
+English Horn : 2
+Baritone Saxophone : 2
+Marimba : 2
+Harpsichord : 1
+Organ : 1
+Timpani : 1
+Koto : 1
+Horn : 1
+Glockenspiel : 1
+Bassoon : 1
+Shehnai : 1
+Banjo : 1
