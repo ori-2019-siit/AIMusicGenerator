@@ -58,13 +58,12 @@ def create_input_and_output(notes_sequence_length, mapped_notes, total_pitches, 
     for i in range(0, len(notes) - notes_sequence_length, 1):
         input_sequence = notes[i:i + notes_sequence_length]
         output_of_sequence = notes[i + notes_sequence_length]
-        for n in input_sequence:
-            input.append(mapped_notes[n])
+        input.append([mapped_notes[char] for char in input_sequence])
         output.append(mapped_notes[output_of_sequence])
 
-    num_of_sequences = len(output)
-    input[:] = [elem / total_pitches for elem in input]
+    num_of_sequences = len(input)
     input = np.reshape(input, (num_of_sequences, notes_sequence_length, 1))
+    input = input / total_pitches
     output = np_utils.to_categorical(output)
 
     return input, output
@@ -90,20 +89,18 @@ def create_model(input, total_pitches):
     model.add(Dropout(0.3))
     model.add(LSTM(512, return_sequences=True))
     model.add(Dropout(0.3))
-    model.add(LSTM(512, return_sequences=True))
-    model.add(Dropout(0.3))
     model.add(LSTM(512))
     model.add(Dense(256))
     model.add(Dropout(0.3))
     model.add(Dense(total_pitches))
     model.add(Activation('softmax'))
-    model.compile(loss='categorical_crossentropy', optimizer='rmsprop')
+    model.compile(loss='categorical_crossentropy', optimizer='adam')
 
     return model
 
 
 def train_network(model, input, output):
-    weights_path = "weights/weights-{epoch:02d}-{loss:.4f}.hdf5"
+    weights_path = "weights-{epoch:02d}-{loss:.4f}.hdf5"
     checkpoint = ModelCheckpoint(weights_path, monitor='loss', verbose=0, save_best_only=True, mode='min')
     callbacks_list = [checkpoint]
 
@@ -113,7 +110,7 @@ def train_network(model, input, output):
 if __name__ == '__main__':
     notes_sequence_length = 100
     instruments = load_from_bin()
-    paths = get_input_paths("lstm_midi")
+    '''paths = get_input_paths("lstm_midi")
     batch_size = 29
     batches = [paths[i * batch_size:(i + 1) * batch_size] for i in range((len(paths) + batch_size - 1) // batch_size)]
     counter = 0
@@ -133,15 +130,17 @@ if __name__ == '__main__':
     for path in paths:
         temp = pickle.load(open(path, "rb"))
         notes += temp
-    pickle.dump(notes, open("notes.p", "wb"))
+    pickle.dump(notes, open("notes.p", "wb"))'''
 
-    pitches = set(notes)
+    notes = pickle.load(open("notes.p", "rb"))
+    pitches = sorted(set(notes))
+    #pickle.dump(pitches, open("pitches.p", "wb"))
     # map pitches to int
     mapped_notes = map_notes_to_int(pitches)
     # create input and output for network
     input, output = create_input_and_output(notes_sequence_length, mapped_notes, len(pitches), notes)
-    pickle.dump(input, open("input_binary.p", "wb"))
-    pickle.dump(output, open("output_binary.p", "wb"))
+    #pickle.dump(input, open("input_binary.p", "wb"))
+    #pickle.dump(output, open("output_binary.p", "wb"))
     # create model and train network
     model = create_model(input, len(pitches))
     train_network(model, input, output)
