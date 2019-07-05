@@ -1,6 +1,11 @@
 import pickle
 import os
 
+
+def load_from_bin(path):
+    return pickle.load(open(path, "rb"))
+
+
 def txt_to_bin():
     txt_file = open(os.path.join("instruments", "instruments_lstm.txt"), "r")
     sorted_instruments = parse_text_file(txt_file)

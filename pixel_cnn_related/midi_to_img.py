@@ -1,5 +1,5 @@
 from music21 import midi, note, chord
-import pickle
+from AIMusicGenerator.instruments_loader import load_from_bin
 import fractions
 import numpy as np
 from PIL import Image
@@ -7,8 +7,6 @@ import os
 from joblib import Parallel, delayed
 import time
 
-def load_from_bin():
-    return pickle.load(open(os.path.join("..\\instruments", "instruments_lstm.bin"), "rb"))
 
 def open_midi(midi_path, remove_drums=True):
     mf = midi.MidiFile()
@@ -128,14 +126,15 @@ def make_all_images(paths, num_cores, instruments):
     results = Parallel(n_jobs=num_cores)(delayed(do_work)(p, instruments) for p in paths)
     return results
 
+
 if __name__ == '__main__':
-    instruments = load_from_bin()
+    instruments = load_from_bin(os.path.join("..\\instruments", "instruments_lstm.bin"))
     paths = get_input_paths("..\\lstm_midi")
 
     batch_size = 32
     counter = 0
 
-    batches = [paths[i * batch_size:(i + 1) * batch_size] for i in range((len(paths) + batch_size - 1) // batch_size )]
+    batches = [paths[i * batch_size:(i + 1) * batch_size] for i in range((len(paths) + batch_size - 1) // batch_size)]
 
     start_time = time.time()
     for batch in batches:
