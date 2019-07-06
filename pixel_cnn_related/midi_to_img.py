@@ -43,14 +43,14 @@ def extract_notes(part):
             duration = nt.duration.quarterLength
             if isinstance(duration, fractions.Fraction):
                 duration = round(float(duration), 1)
-            pitches.append((max(0.0, nt.pitch.ps), duration))
+            pitches.append((nt.pitch.ps, duration))
         elif isinstance(nt, chord.Chord):
             akord = []
             duration = nt.duration.quarterLength
             if isinstance(duration, fractions.Fraction):
                 duration = round(float(duration), 1)
             for pitch in nt.pitches:
-                akord.append(((max(0.0, pitch.ps)), duration))
+                akord.append((pitch.ps, duration))
             pitches.append(akord)
 
     return pitches
@@ -58,7 +58,7 @@ def extract_notes(part):
 
 def make_image(pitches, name):
     counter = 0
-    width, height = 256, 256
+    width, height = 64, 64
     data = np.zeros((height, width, 3), dtype=np.uint8)
     start = 0
     offset = 10
@@ -92,7 +92,7 @@ def make_image(pitches, name):
                 counter += 1
 
         for note in notes:
-            ps = data[note][start:start + pixels + 1]
+            ps = data[note-46][start:start + pixels + 1] # max pitch is 93, min is 48
             for p in ps:
                 p[channel] = 255
         start = start + pixels + 1
@@ -126,6 +126,25 @@ def make_all_images(paths, num_cores, instruments):
     results = Parallel(n_jobs=num_cores)(delayed(do_work)(p, instruments) for p in paths)
     return results
 
+def find_ps_range(paths, instruments):
+    maksimum = 0
+    minimum = 1000
+    from operator import itemgetter
+    for path in paths:
+        try:
+            print(path)
+            song = open_midi(path)
+            pitches = extract_line(song, instruments)
+            flat_list = [item for sublist in pitches for item in sublist]
+            iter_minmum = min(flat_list, key=itemgetter(0))[0]
+            iter_max = max(flat_list, key=itemgetter(0))[0]
+            if iter_minmum < minimum:
+                minimum = iter_minmum
+            if iter_max > maksimum:
+                maksimum = iter_max
+        except:
+            continue
+    return minimum, maksimum
 
 if __name__ == '__main__':
     instruments = load_from_bin(os.path.join("..\\instruments", "instruments_lstm.bin"))

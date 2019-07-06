@@ -38,7 +38,7 @@ def make_pitches(path):
         for timestamp in sorted(notes.keys()):
             if len(notes[timestamp]) == 1:
                 n = note.Note()
-                n.pitch.ps = list(notes[timestamp].keys())[0]
+                n.pitch.ps = list(notes[timestamp].keys())[0] + 46
                 n.duration.quarterLength = list(notes[timestamp].values())[0] / offset
                 music.append(n)
             else:
@@ -46,14 +46,14 @@ def make_pitches(path):
 
                 for pitch, duration in notes[timestamp].items():
                     if duration not in durations.keys():
-                        durations[duration] = [pitch]
+                        durations[duration] = [pitch+46]
                     else:
-                        durations[duration].append(pitch)
+                        durations[duration].append(pitch+46)
 
                 for duration, pitches in durations.items():
                     if len(pitches) == 1:
                         n = note.Note()
-                        n.pitch.ps = pitches[0]
+                        n.pitch.ps = pitches[0] + 46
                         n.duration.quarterLength = duration/offset
                         music.append(n)
                     else:
@@ -73,4 +73,4 @@ def image_to_midi(path):
     save_midi(make_pitches(path), path)
 
 if __name__ == '__main__':
-    image_to_midi("../generated_images/806.png")
+    image_to_midi("../generated_images/train/806.png")
