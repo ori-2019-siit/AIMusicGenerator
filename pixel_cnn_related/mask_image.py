@@ -38,4 +38,4 @@ def mask_all_images(path):
 
 
 if __name__ == '__main__':
-    mask_all_images(os.path.join("..\\generated_images", "test"))
+    mask_all_images(os.path.join("..\\dataset_for_pixel_cnn", "test"))

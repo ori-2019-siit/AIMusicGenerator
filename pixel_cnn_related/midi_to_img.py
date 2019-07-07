@@ -166,9 +166,9 @@ if __name__ == '__main__':
                 for part in song_images:
                     name = str(counter) + ".png"
                     if counter % 10 == 0:
-                        part.save(os.path.join("..\\generated_images\\test", name))
+                        part.save(os.path.join("..\\dataset_for_pixel_cnn\\test", name))
                     else:
-                        part.save(os.path.join("..\\generated_images\\train", name))
+                        part.save(os.path.join("..\\dataset_for_pixel_cnn\\train", name))
                     counter += 1
 
     print("Time elapsed: {} seconds".format(time.time() - start_time))

@@ -66,11 +66,11 @@ def make_pitches(path):
 
 def save_midi(stream, path):
     name = path[path.rfind("/") + 1:path.rfind(".")]
-    stream.write("midi", "../generated_midis/{}.mid".format(name))
+    stream.write("midi", "../generated_music_pixel_cnn/{}.mid".format(name))
 
 
 def image_to_midi(path):
     save_midi(make_pitches(path), path)
 
 if __name__ == '__main__':
-    image_to_midi("../generated_images/train/806.png")
+    image_to_midi("../dataset_for_pixel_cnn/train/806.png")
