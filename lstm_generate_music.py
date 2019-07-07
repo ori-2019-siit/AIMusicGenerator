@@ -30,7 +30,7 @@ def create_model(input, total_pitches, weights):
     return model
 
 
-def create_list_of_sequences(notes, notes_sequence_length, total_pitches):
+def create_list_of_sequences(notes, notes_sequence_length, pitches):
     list_of_sequences = []
     for i in range(0, len(notes) - notes_sequence_length, 1):
         input_sequence = notes[i:i + notes_sequence_length]
@@ -39,7 +39,7 @@ def create_list_of_sequences(notes, notes_sequence_length, total_pitches):
     num_of_sequences = len(list_of_sequences)
 
     input = np.reshape(list_of_sequences, (num_of_sequences, notes_sequence_length, 1))
-    input = input / total_pitches
+    input = input / len(pitches)
 
     return list_of_sequences, input
 
@@ -50,7 +50,7 @@ def generate_sequence(model, input, pitches, num_of_notes):
     generated_sequence = []
     for note in range(num_of_notes):
         input_sequence = np.reshape(sequence, (1, len(sequence), 1))
-        input_sequence /= len(pitches)
+        input_sequence = input_sequence / len(pitches)
         output = model.predict(input_sequence, verbose=0)
         note_as_int = np.argmax(output)
         output_note = pitches[note_as_int]
@@ -87,7 +87,7 @@ if __name__ == '__main__':
     notes_sequence_length = 100
     notes = pickle.load(open("notes/notes.p", "rb"))
     pitches = pickle.load(open("notes/pitches.p", "rb"))
-    list_of_sequences, input = create_list_of_sequences(notes, notes_sequence_length, len(pitches))
+    list_of_sequences, input = create_list_of_sequences(notes, notes_sequence_length, pitches)
     weights = "weights/weights-60-0.0378.hdf5"
     model = create_model(input, len(pitches), weights)
     generated_sequence = generate_sequence(model, list_of_sequences, pitches, 500)

@@ -1,5 +1,5 @@
 from music21 import midi, note, chord
-from AIMusicGenerator.instruments_loader import load_from_bin
+from instruments_loader import load_from_bin
 import fractions
 import numpy as np
 from PIL import Image

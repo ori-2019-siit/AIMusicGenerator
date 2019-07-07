@@ -52,7 +52,7 @@ def create_input_and_output(notes_sequence_length, pitches, notes):
 
     num_of_sequences = len(input)
     input = np.reshape(input, (num_of_sequences, notes_sequence_length, 1))
-    input /= len(pitches)
+    input = input / len(pitches)
     output = np_utils.to_categorical(output)
 
     return input, output
