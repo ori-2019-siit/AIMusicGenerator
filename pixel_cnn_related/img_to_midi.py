@@ -6,7 +6,7 @@ from PIL import Image
 def load_image(path):
     img = Image.open(path)
     img.load()
-    img = img.rotate(-90)
+    img = img.rotate(90)
     return np.asarray(img, dtype=np.uint8)
 
 

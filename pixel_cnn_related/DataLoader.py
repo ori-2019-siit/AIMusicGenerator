@@ -2,8 +2,11 @@ import os
 import numpy as np
 from imageio import imread
 
+"""
+    DataLoader class implementation for openai pixel cnn
+"""
 
-def load(path, subset):  # path = folder sa slikama, subset = train|test, napravi svoju funkciju
+def load(path, subset):
     X = []
     for root, dirs, files in os.walk(os.path.join(path, subset)):
         for file in files:

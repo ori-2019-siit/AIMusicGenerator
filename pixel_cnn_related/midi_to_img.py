@@ -6,6 +6,7 @@ from PIL import Image
 import os
 from joblib import Parallel, delayed
 import time
+import random
 
 
 def open_midi(midi_path, remove_drums=True):
@@ -84,7 +85,7 @@ def make_image(pitches, name):
             # we have filled every channel and need to return a value
             if channel == 3:
                 img = Image.fromarray(data, "RGB")
-                img = img.rotate(90)
+                img = img.rotate(-90)
                 images.append(img)
                 data = np.zeros((height, width, 3), dtype=np.uint8)
                 start = 0
@@ -149,7 +150,8 @@ def find_ps_range(paths, instruments):
 if __name__ == '__main__':
     instruments = load_from_bin(os.path.join("..\\instruments", "instruments_lstm.bin"))
     paths = get_input_paths("..\\lstm_midi")
-
+    random.shuffle(paths)
+    paths = paths[:10]
     batch_size = 32
     counter = 0
 
@@ -163,7 +165,10 @@ if __name__ == '__main__':
             if not song_images is None:
                 for part in song_images:
                     name = str(counter) + ".png"
-                    part.save(os.path.join("..\\generated_images", name))
+                    if counter % 10 == 0:
+                        part.save(os.path.join("..\\generated_images\\test", name))
+                    else:
+                        part.save(os.path.join("..\\generated_images\\train", name))
                     counter += 1
 
     print("Time elapsed: {} seconds".format(time.time() - start_time))
